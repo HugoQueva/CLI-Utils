@@ -21,7 +21,7 @@ pub fn list() -> Result<CommandResult, CommandError> {
     
                             match metadata {
                                 Ok(meta) => {
-                                    file_size = meta.file_size();
+                                    file_size = meta.file_size(); // ! FIXME: This is Windows specific code.
                                 },
                                 Err(_) => file_size = 0,
                             }
