@@ -16,7 +16,7 @@ pub fn list() -> Result<CommandResult, CommandError> {
                 Ok(entry_vec) => {
                     for entry in entry_vec {
                         if !entry.is_dir() { 
-                            let metadata = fs::metadata(&entry);                       
+                            let metadata = entry.metadata();                       
                             let mut file_size: u64 = 999_999_999_999_999; //NOTE: To see if the metadata can be read
     
                             match metadata {
