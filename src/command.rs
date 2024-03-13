@@ -25,7 +25,7 @@ impl CommandResult {
     }
 
     pub fn with_empty_text() -> CommandResult {
-        CommandResult(String::from('\0'))
+        CommandResult(String::new())
     }
 }
 
@@ -37,7 +37,7 @@ impl CommandError {
     }
 
     pub fn with_empty_text() -> CommandError {
-        CommandError(String::from('\0'))
+        CommandError(String::new())
     }
 }
 
