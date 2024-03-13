@@ -51,6 +51,7 @@ pub fn handle_command(command: Command) -> Result<CommandResult, CommandError> {
         CommandType::ECHO => echo(command),
         CommandType::LS => list(),
         CommandType::CLEAR => clear(),
-        _ => Ok(CommandResult::from_str("Executed successfully!")),
+        
+        _ => Ok(CommandResult::from_str("This command is not yet implemented!")),
     }
 }
