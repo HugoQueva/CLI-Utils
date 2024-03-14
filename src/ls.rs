@@ -1,7 +1,7 @@
 use byte_prefix::calc_bytes;
 
 use crate::command::{CommandResult, CommandError};
-use std::{fs, io, os::windows::fs::MetadataExt};
+use std::{fs, io};
 
 pub fn list() -> Result<CommandResult, CommandError> {
     let directory = fs::read_dir("./");
@@ -17,11 +17,11 @@ pub fn list() -> Result<CommandResult, CommandError> {
                     for entry in entry_vec {
                         if !entry.is_dir() { 
                             let metadata = entry.metadata();                       
-                            let mut file_size: u64 = 999_999_999_999_999; //NOTE: To see if the metadata can be read
+                            let mut file_size: u64 = 0; //NOTE: To see if the metadata can be read
     
                             match metadata {
                                 Ok(meta) => {
-                                    file_size = meta.file_size(); // ! FIXME: This is Windows specific code.
+                                    file_size = meta.len();
                                 },
                                 Err(_) => file_size = 0,
                             }
