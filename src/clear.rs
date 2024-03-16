@@ -8,5 +8,12 @@ pub fn clear() -> Result<CommandResult, CommandError> {
     println!("\0");
     */
 
-    Err(CommandError::from_str("This command is not implemented yet!"))
+    // ! This way is the worst way to clear the terminal...
+
+    for _i in 0..500 {
+        print!("\n");
+    }
+
+    Ok(CommandResult::with_empty_text())
+    //Err(CommandError::from_str("This command is not implemented yet!"))
 }
