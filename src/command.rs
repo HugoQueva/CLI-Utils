@@ -1,4 +1,4 @@
-use crate::{clear::clear, echo::echo, ls::list};
+use crate::{cd::set_cd, clear::clear, echo::echo, ls::list, Application};
 
 #[derive(Debug)]
 pub enum CommandType {
@@ -8,6 +8,7 @@ pub enum CommandType {
     FIND,
     GREP,
     CLEAR,
+    CD,
     EXIT,
     UNKNOWN,
 }
@@ -35,22 +36,19 @@ impl CommandError {
     pub fn from_str(s: &str) -> CommandError {
         CommandError(String::from(s))
     }
-
-    pub fn with_empty_text() -> CommandError {
-        CommandError(String::new())
-    }
 }
 
 //////////////////////////////////////
 ///            HANDLERS            ///
 //////////////////////////////////////
 
-pub fn handle_command(command: Command) -> Result<CommandResult, CommandError> {
+pub fn handle_command(command: Command, application: &mut Application) -> Result<CommandResult, CommandError> {
     match command.command_type {
         CommandType::UNKNOWN => Err(CommandError::from_str("This command does not exist!")),
         CommandType::ECHO => echo(command),
-        CommandType::LS => list(),
+        CommandType::LS => list(application),
         CommandType::CLEAR => clear(),
+        CommandType::CD => set_cd(command, application),
         
         _ => Ok(CommandResult::from_str("This command is not yet implemented!")),
     }
