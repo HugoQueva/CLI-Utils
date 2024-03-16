@@ -22,6 +22,7 @@ pub fn handle_user_input(stdin: &Stdin) -> Result<Command, CommandError> {
                 "grep" => CommandType::GREP,
                 "exit" => CommandType::EXIT,
                 "clear" => CommandType::CLEAR,
+                "cd" => CommandType::CD,
                 _ => CommandType::UNKNOWN,
             };
 

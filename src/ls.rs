@@ -1,10 +1,11 @@
 use byte_prefix::calc_bytes;
 
-use crate::command::{CommandResult, CommandError};
+use crate::{command::{CommandError, CommandResult}, Application};
 use std::{fs, io};
+use colored::*;
 
-pub fn list() -> Result<CommandResult, CommandError> {
-    let directory = fs::read_dir("./");
+pub fn list(application: &Application) -> Result<CommandResult, CommandError> {
+    let directory = fs::read_dir(application.get_working_directory());
 
     match directory {
         Ok(dir) => {
@@ -17,23 +18,22 @@ pub fn list() -> Result<CommandResult, CommandError> {
                     for entry in entry_vec {
                         if !entry.is_dir() { 
                             let metadata = entry.metadata();                       
-                            let mut file_size: u64 = 0; //NOTE: To see if the metadata can be read
+                            let file_size: f32;
     
+                            // * NOTE: Find a way to get the size of the file using a f64 for improved precision.
                             match metadata {
                                 Ok(meta) => {
-                                    file_size = meta.len();
+                                    file_size = meta.len() as f32;
                                 },
-                                Err(_) => file_size = 0,
+                                Err(_) => file_size = 0.0,
                             }
 
-                            // * TODO (Hugo Quéva): Change declaration of `size` to `u64` though the precision 
-                            // * of the `f32` higher.
-                            let byte_format = calc_bytes(file_size as f32);
+                            let byte_format = calc_bytes(file_size);
 
-                            println!("{} ({})", entry.display(), byte_format);
+                            println!("{} ({})", entry.display().to_string().green().bold(), byte_format);
                         }
                         else{
-                            println!("{}", entry.display());
+                            println!("{}", entry.display().to_string().blue().bold());
                         }
                     }
                 }
