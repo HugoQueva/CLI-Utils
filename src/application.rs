@@ -1,4 +1,5 @@
 use std::env;
+
 pub struct Application {
     pub working_directory: String,
 }
