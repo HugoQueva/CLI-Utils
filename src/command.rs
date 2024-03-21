@@ -1,4 +1,4 @@
-use crate::{cd::set_cd, clear::clear, echo::echo, ls::list, Application};
+use crate::{cd::set_cd, clear::clear, echo::echo, ls::list, makedir::make_dir, makefile::make_file, Application};
 
 #[derive(Debug)]
 pub enum CommandType {
@@ -10,6 +10,8 @@ pub enum CommandType {
     CLEAR,
     CD,
     EXIT,
+    MAKE_FILE,
+    MAKE_DIRECTORY,
     UNKNOWN,
 }
 
@@ -49,7 +51,8 @@ pub fn handle_command(command: Command, application: &mut Application) -> Result
         CommandType::LS => list(application),
         CommandType::CLEAR => clear(),
         CommandType::CD => set_cd(command, application),
-        
+        CommandType::MAKE_FILE => make_file(&command, application),
+        CommandType::MAKE_DIRECTORY => make_dir(&command, application),
         _ => Ok(CommandResult::from_str("This command is not yet implemented!")),
     }
 }

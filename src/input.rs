@@ -23,6 +23,8 @@ pub fn handle_user_input(stdin: &Stdin) -> Result<Command, CommandError> {
                 "exit" => CommandType::EXIT,
                 "clear" => CommandType::CLEAR,
                 "cd" => CommandType::CD,
+                "makefile" => CommandType::MAKE_FILE,
+                "makedir" => CommandType::MAKE_DIRECTORY,
                 _ => CommandType::UNKNOWN,
             };
 
