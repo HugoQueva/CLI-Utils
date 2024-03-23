@@ -3,7 +3,9 @@
 </div>
 
 <div align="center" style="display: flex;">
+  
   ![workflow](https://github.com/HugoQueva/CLI-Utils/actions/workflows/rust.yml/badge.svg)
+  
 </div>
 
 <p align="center">A CLI Tools supporting basic commands made both for learning and for fun!</p>
