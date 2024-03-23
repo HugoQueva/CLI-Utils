@@ -25,6 +25,7 @@ pub fn handle_user_input(stdin: &Stdin) -> Result<Command, CommandError> {
                 "cd" => CommandType::CD,
                 "makefile" => CommandType::MAKE_FILE,
                 "makedir" => CommandType::MAKE_DIRECTORY,
+                "delete" => CommandType::DELETE,
                 _ => CommandType::UNKNOWN,
             };
 
