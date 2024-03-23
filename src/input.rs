@@ -34,7 +34,6 @@ pub fn handle_user_input(stdin: &Stdin) -> Result<Command, CommandError> {
             };
 
             return Ok(command);
-        
         }
         Err(_) => return Err(CommandError(String::from("Could not read from stdin"))),
     } 

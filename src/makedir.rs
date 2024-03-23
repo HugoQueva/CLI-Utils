@@ -8,7 +8,18 @@ pub fn make_dir(command: &Command, application: &mut Application) -> Result<Comm
         return Err(CommandError::from_str("You need to specify a file name."));
     }
 
-    let file_name = args[1];
+    let mut file_name = String::new();
+
+    for i in 1..args.len() {
+        if i == 0 { continue; }
+
+        if i == args.len() - 1 {
+            file_name.push_str(&args[i]);
+            break;
+        }
+
+        file_name.push_str(&format!("{} ", args[i]));
+    }
 
     let path = format!("{}/{}", application.get_working_directory(), file_name);
 

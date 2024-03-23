@@ -3,6 +3,7 @@ mod makefile;
 mod makedir;
 mod command;
 mod display;
+mod delete;
 mod input;
 mod clear;
 mod echo;

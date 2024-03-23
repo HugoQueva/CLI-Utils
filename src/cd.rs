@@ -18,7 +18,8 @@ pub fn set_cd(command: Command, application: &mut Application) -> Result<Command
         return Err(CommandError::from_str("The path must be a directory!"));
     }
 
-    application.set_working_directory(path_buffer.to_str().unwrap_or("./").to_owned());
+    //Replacing the '/' with `\` for cleaner `ls` rendering.
+    application.set_working_directory(path_buffer.to_str().unwrap_or(".\\").replace('/', "\\").to_owned());
 
     Ok(CommandResult::with_empty_text())
 }
