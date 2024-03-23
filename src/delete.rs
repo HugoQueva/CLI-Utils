@@ -8,7 +8,7 @@ pub fn delete(command: &Command, application: &mut Application) -> Result<Comman
     let mut file_name = String::new();
     
     for i in 1..args.len() {
-        if i == 0 { continue; }
+        if i == 0 { continue; 
 
         if i == args.len() - 1 {
             file_name.push_str(&args[i]);
