@@ -1,9 +1,10 @@
 <div align="center">
   <h1>CLI-TOOLS</h1>
 </div>
-  
+
+<div align="center" style="display: flex;">
   ![workflow](https://github.com/HugoQueva/CLI-Utils/actions/workflows/rust.yml/badge.svg)
-  
+</div>
 
 <p align="center">A CLI Tools supporting basic commands made both for learning and for fun!</p>
 <p align="center">I just started Rust few days ago after switching from C++ to Rust. Improvements and suggestions are welcome!</p>
