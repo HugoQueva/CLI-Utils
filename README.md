@@ -4,7 +4,7 @@
 
 <div align="center" style="display: flex;">
   
-  ![workflow](https://github.com/HugoQueva/CLI-Utils/actions/workflows/rust.yml/badge.svg)
+  [![Rust](https://github.com/HugoQueva/CLI-Utils/actions/workflows/rust.yml/badge.svg)](https://github.com/HugoQueva/CLI-Utils/actions/workflows/rust.yml)
   
 </div>
 
