@@ -1,7 +1,8 @@
 use byte_prefix::calc_bytes;
 
 use crate::{command::{CommandError, CommandResult}, Application};
-use std::{fs, io};
+use std::{fs, io, time};
+use chrono::{DateTime, Datelike, Local};
 use colored::*;
 
 pub fn list(application: &Application) -> Result<CommandResult, CommandError> {
@@ -16,24 +17,27 @@ pub fn list(application: &Application) -> Result<CommandResult, CommandError> {
             match entries {
                 Ok(entry_vec) => {
                     for entry in entry_vec {
+                        let metadata = entry.metadata().unwrap(); // ? File should always have a metadata.
+                        let creation_time_local = metadata.created().unwrap_or(time::SystemTime::now());;
+                        let date: DateTime<Local> = DateTime::from(creation_time_local);
+                        let file_size = metadata.len() as f32;
+
                         if !entry.is_dir() { 
-                            let metadata = entry.metadata();                       
-                            let file_size: f32;
-    
-                            // * NOTE: Find a way to get the size of the file using a f64 for improved precision.
-                            match metadata {
-                                Ok(meta) => {
-                                    file_size = meta.len() as f32;
-                                },
-                                Err(_) => file_size = 0.0,
-                            }
-
-                            let byte_format = calc_bytes(file_size);
-
-                            println!("{} ({})", entry.display().to_string().green().bold(), byte_format);
+                            println!("[{}-{:02}-{:02}] {} (~{})",
+                                date.year(),
+                                date.month(),
+                                date.day(),
+                                entry.display().to_string().green().bold(), 
+                                calc_bytes(file_size)
+                            );
                         }
                         else{
-                            println!("{}", entry.display().to_string().blue().bold());
+                            println!("[{}-{:02}-{:02}] {}",
+                                date.year(),
+                                date.month(),
+                                date.day(),
+                                entry.display().to_string().blue().bold(), 
+                            );
                         }
                     }
                 }

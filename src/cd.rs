@@ -19,7 +19,7 @@ pub fn set_cd(command: Command, application: &mut Application) -> Result<Command
     }
 
     //Replacing the '/' with `\` for cleaner `ls` rendering.
-    application.set_working_directory(path_buffer.to_str().unwrap_or(".\\").replace('/', "\\").to_owned());
+    application.set_working_directory(path_buffer.to_str().unwrap().replace('/', "\\").to_owned());
 
     Ok(CommandResult::with_empty_text())
 }
