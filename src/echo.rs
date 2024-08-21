@@ -1,23 +1,17 @@
 use crate::command::{Command, CommandResult, CommandError};
 
 pub fn echo(command: Command) -> Result<CommandResult, CommandError> {
-    let args = command.args.split_whitespace().collect::<Vec<&str>>();
-
-    if args.len() < 2 {
-        return Err(CommandError::from_str("You need to specify an argument to echo!"));
+    if command.args.is_empty() {
+        return Err(CommandError::from("You need to specify an argument to echo!"));
     }
 
-    let mut echo_string: String = String::new();
+    let echo_string: String = command.args
+                                         .iter()
+                                         .map(|arg| format!("{}", arg))
+                                         .collect();
 
-    for i in 1..args.len() {
-        if i == 0 { continue; }
-        
-        let arg = args[i];
 
-        echo_string.push_str(&format!("{} ",arg));
-    }
+    println!("{}", echo_string);
 
-    println!("{echo_string}");
-
-    Ok(CommandResult::with_empty_text())
+    Ok(CommandResult::default())
 }

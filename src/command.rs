@@ -1,12 +1,7 @@
+use std::str::FromStr;
+
 use crate::{
-    cd::set_cd,
-    clear::clear,
-    delete::delete, 
-    echo::echo, 
-    ls::list, 
-    makedir::make_dir, 
-    makefile::make_file, 
-    Application
+    cat::cat, cd::set_cd, clear::clear, delete::delete, echo::echo, find::find, ls::list, makedir::make_dir, makefile::make_file, Application
 };
 
 #[derive(Debug)]
@@ -19,34 +14,85 @@ pub enum CommandType {
     CLEAR,
     CD,
     EXIT,
-    MAKE_FILE,
-    MAKE_DIRECTORY,
+    MAKEFILE,
+    MAKEDIRECTORY,
     DELETE,
     UNKNOWN,
 }
 
 pub struct Command {
     pub command_type: CommandType,
-    pub args: String,
+    pub args: Vec<String>,
 }
 
-pub struct CommandResult(pub String);
+#[derive(Debug)]
+pub struct CommandParseError;
 
-impl CommandResult {
-    pub fn from_str(s: &str) -> CommandResult {
-        CommandResult(String::from(s))
-    }
+pub struct CommandResult {
+    pub message: Option<String>,
+}
 
-    pub fn with_empty_text() -> CommandResult {
-        CommandResult(String::new())
+impl FromStr for CommandResult {
+    type Err = CommandParseError;
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        Ok(CommandResult{
+            message: Some(String::from(s)),
+        })
     }
 }
 
-pub struct CommandError(pub String);
+impl From<String> for CommandResult {
+    fn from(value: String) -> Self {
+        CommandResult {
+            message: Some(value),
+        }
+    }
+}
 
-impl CommandError {
-    pub fn from_str(s: &str) -> CommandError {
-        CommandError(String::from(s))
+impl From<&str> for CommandResult {
+    fn from(value: &str) -> Self {
+        CommandResult {
+            message: Some(value.to_string())
+        }
+    }
+}
+
+impl Default for CommandResult {
+    // Returns a `CommandResult` object without any message
+    fn default() -> Self {
+        CommandResult {
+            message: None,
+        }
+    }
+}
+
+pub struct CommandError {
+    pub message: Option<String>
+}
+
+impl From<&str> for CommandError {
+    fn from(value: &str) -> Self {
+        CommandError {
+            message: Some(value.to_string())
+        }
+    }
+}
+
+impl From<String> for CommandError {
+    fn from(value: String) -> Self {
+        CommandError {
+            message: Some(value),
+        }
+    }
+}
+
+impl Default for CommandError {
+    // Returns a `CommandError` object without any message
+    fn default() -> Self {
+        CommandError {
+            message: None,
+        }
     }
 }
 
@@ -56,14 +102,16 @@ impl CommandError {
 
 pub fn handle_command(command: Command, application: &mut Application) -> Result<CommandResult, CommandError> {
     match command.command_type {
-        CommandType::UNKNOWN => Err(CommandError::from_str("This command does not exist!")),
+        CommandType::UNKNOWN => Err(CommandError::from("This command does not exist!")),
         CommandType::ECHO => echo(command),
         CommandType::LS => list(application),
         CommandType::CLEAR => clear(),
         CommandType::CD => set_cd(command, application),
-        CommandType::MAKE_FILE => make_file(&command, application),
-        CommandType::MAKE_DIRECTORY => make_dir(&command, application),
-        CommandType::DELETE => delete(&command, application),
-        _ => Ok(CommandResult::from_str("This command is not yet implemented!")),
+        CommandType::MAKEDIRECTORY => make_file(command, application),
+        CommandType::MAKEFILE => make_dir(command, application),
+        CommandType::DELETE => delete(command, application),
+        CommandType::CAT => cat(command, application),
+        CommandType::FIND => find(command),
+        _ => Ok(CommandResult::from("This command is not yet implemented!")),
     }
 }

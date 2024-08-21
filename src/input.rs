@@ -8,13 +8,19 @@ pub fn handle_user_input(stdin: &Stdin) -> Result<Command, CommandError> {
     
     match line {
         Ok(_) => {
-            let args = buffer.split_whitespace().collect::<Vec<&str>>();
+            let mut args: Vec<String> = Vec::new();
 
-            if args.len() == 0 {
-                return Err(CommandError::from_str("You have to use a command")); 
+            for char in buffer.split_whitespace() {
+                args.push(char.to_owned());
             }
 
-            let command_type = match args[0] {
+            if args.is_empty() {
+                return Err(CommandError::from("You have to use a command")); 
+            }
+
+            args.remove(0);
+
+            let command_type = match &(*args[0]) {
                 "echo" => CommandType::ECHO,
                 "cat" => CommandType::CAT,
                 "ls" => CommandType::LS,
@@ -23,20 +29,20 @@ pub fn handle_user_input(stdin: &Stdin) -> Result<Command, CommandError> {
                 "exit" => CommandType::EXIT,
                 "clear" => CommandType::CLEAR,
                 "cd" => CommandType::CD,
-                "makefile" => CommandType::MAKE_FILE,
-                "makedir" => CommandType::MAKE_DIRECTORY,
+                "makefile" => CommandType::MAKEFILE,
+                "makedir" => CommandType::MAKEDIRECTORY,
                 "delete" => CommandType::DELETE,
                 _ => CommandType::UNKNOWN,
             };
 
             let command = Command {
                 command_type: command_type,
-                args: buffer,
+                args: args,
             };
 
             return Ok(command);
         }
-        Err(_) => return Err(CommandError(String::from("Could not read from stdin"))),
+        Err(_) => return Err(CommandError::from("Could not read from stdin")),
     } 
 
 }

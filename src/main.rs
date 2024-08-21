@@ -7,6 +7,8 @@ mod delete;
 mod input;
 mod clear;
 mod echo;
+mod find;
+mod cat;
 mod ls;
 mod cd;
 
