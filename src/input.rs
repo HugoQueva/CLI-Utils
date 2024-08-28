@@ -8,32 +8,30 @@ pub fn handle_user_input(stdin: &Stdin) -> Result<Command, CommandError> {
     
     match line {
         Ok(_) => {
-            let mut args: Vec<String> = Vec::new();
-
-            for char in buffer.split_whitespace() {
-                args.push(char.to_owned());
-            }
-
-            if args.is_empty() {
+            let mut buffer_iterator = buffer.split_whitespace();
+            let command = buffer_iterator.next();
+            
+            if let None = command {
                 return Err(CommandError::from("You have to use a command")); 
             }
 
-            args.remove(0);
-
-            let command_type = match &(*args[0]) {
-                "echo" => CommandType::ECHO,
-                "cat" => CommandType::CAT,
-                "ls" => CommandType::LS,
-                "find" => CommandType::FIND,
-                "grep" => CommandType::GREP,
-                "exit" => CommandType::EXIT,
-                "clear" => CommandType::CLEAR,
-                "cd" => CommandType::CD,
-                "makefile" => CommandType::MAKEFILE,
-                "makedir" => CommandType::MAKEDIRECTORY,
-                "delete" => CommandType::DELETE,
-                _ => CommandType::UNKNOWN,
+            let command_type = match command.unwrap() {
+                "echo" => CommandType::Echo,
+                "cat" => CommandType::Cat,
+                "ls" => CommandType::Ls,
+                "find" => CommandType::Find,
+                "grep" => CommandType::Grep,
+                "exit" => CommandType::Exit,
+                "clear" => CommandType::Clear,
+                "cd" => CommandType::Cd,
+                "makefile" => CommandType::MakeFile,
+                "makedir" => CommandType::MakeDirectory,
+                "delete" => CommandType::Delete,
+                _ => CommandType::Unknown,
             };
+
+            let args: Vec<String> = buffer_iterator.map(|x| x.to_owned())
+                                                   .collect();
 
             let command = Command {
                 command_type: command_type,

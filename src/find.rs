@@ -6,7 +6,9 @@ use crate::command::{Command, CommandError, CommandResult};
 
 fn find_traverse_path(path: &PathBuf, target: &str) -> Result<(), Error> {
     for entry in  fs::read_dir(path)? {
+        
         if let Ok(entry) = entry {
+            
             let path = entry.path();
 
             if path.is_dir() {

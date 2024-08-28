@@ -28,22 +28,24 @@ fn main(){
 
         let command = handle_user_input(&stdin);
 
-        match command {
-            Ok(command) => {
+        if let Ok(command) = command {
 
-                match command.command_type {
-                    CommandType::EXIT => break,
-                    _ => {},
-                }
+            match command.command_type {
+                CommandType::Exit => break,
+                 _ => {},
+            }
 
-                let result = handle_command(command, &mut application);
+            let result = handle_command(command, &mut application);
 
-                match result {
-                    Ok(result) => print_result(result, &application),
-                    Err(error) => print_error(error, &application),
-                }
-            },
-            Err(error) => print_error(error, &application),
+            if let Ok(result) = result {
+                print_result(result, &application);
+            } 
+            else if let Err(error) = result {
+                print_error(error, &application);
+            }
+
+        } else if let Err(error) = command {
+            print_error(error, &application);
         }
     }
 }

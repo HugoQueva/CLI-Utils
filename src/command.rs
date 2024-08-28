@@ -6,18 +6,18 @@ use crate::{
 
 #[derive(Debug)]
 pub enum CommandType {
-    ECHO,
-    CAT,
-    LS,
-    FIND,
-    GREP,
-    CLEAR,
-    CD,
-    EXIT,
-    MAKEFILE,
-    MAKEDIRECTORY,
-    DELETE,
-    UNKNOWN,
+    Echo,
+    Cat,
+    Ls,
+    Find,
+    Grep,
+    Clear,
+    Cd,
+    Exit,
+    MakeFile,
+    MakeDirectory,
+    Delete,
+    Unknown,
 }
 
 pub struct Command {
@@ -102,16 +102,16 @@ impl Default for CommandError {
 
 pub fn handle_command(command: Command, application: &mut Application) -> Result<CommandResult, CommandError> {
     match command.command_type {
-        CommandType::UNKNOWN => Err(CommandError::from("This command does not exist!")),
-        CommandType::ECHO => echo(command),
-        CommandType::LS => list(application),
-        CommandType::CLEAR => clear(),
-        CommandType::CD => set_cd(command, application),
-        CommandType::MAKEDIRECTORY => make_file(command, application),
-        CommandType::MAKEFILE => make_dir(command, application),
-        CommandType::DELETE => delete(command, application),
-        CommandType::CAT => cat(command, application),
-        CommandType::FIND => find(command),
+        CommandType::Unknown => Err(CommandError::from("This command does not exist!")),
+        CommandType::Echo => echo(command),
+        CommandType::Ls => list(application),
+        CommandType::Clear => clear(),
+        CommandType::Cd => set_cd(command, application),
+        CommandType::MakeFile => make_file(command, application),
+        CommandType::MakeDirectory => make_dir(command, application),
+        CommandType::Delete => delete(command, application),
+        CommandType::Cat => cat(command, application),
+        CommandType::Find => find(command),
         _ => Ok(CommandResult::from("This command is not yet implemented!")),
     }
 }
