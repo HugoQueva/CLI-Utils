@@ -31,6 +31,6 @@ pub fn print_error(error: CommandError, application: &Application) {
             command_message.red()
         );
     
-        println!("{}", formatted_string);
+        eprintln!("{}", formatted_string);
     }
 }
